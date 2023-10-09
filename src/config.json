@@ -1,0 +1,15 @@
+{
+    "chainId" : 31337,
+    "safeConfig" : {
+        "31337" : {
+            "safeMasterCopyAddress": "0xFedc87F5f38142783f4db60f4eb1296F3ec7991e",
+            "safeProxyFactoryAddress": "0x7759ca2f14B0e6544e6F3a25330Fa34C1A79CBe8",
+            "multiSendAddress": "0x0e508e1795cE78892132d7399163924324090C1b",
+            "multiSendCallOnlyAddress": "0x2b845496846bD55BF60C2c63822d2e6df38a04B8",
+            "fallbackHandlerAddress": "0x5b795bC69D292dd93961F2C9f1f15Deb4C7EFa8C",
+            "signMessageLibAddress": "0x080BDF7e0A9816B1462E096750adBFA6563ee93A",
+            "createCallAddress": "0x6204cA4282DCB6d59Ffd9DE7541298776680a13E",
+            "simulateTxAccessorAddress" : "0xBe6BD378a99F9f67D09270e33580C2c8be456a20"
+        }
+    }
+}
