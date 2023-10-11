@@ -62,10 +62,16 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
         (approvers.length >= threshold - 1 && !approvers.includes(signerAddress)) ||
         (approvers.length >= threshold && approvers.includes(signerAddress))
 
+    // TODO: When the signer changes, reset everything
     async function signOnChain () {
         if (!canSign) return
+        setError(null)
         try {
-            await safe.approveTransactionHash(safeTransaction)
+            console.log(safe)
+            console.log(safeTransaction)
+            const transactionHash = await safe.getTransactionHash(safeTransaction)
+            await safe.approveTransactionHash(transactionHash)
+            // TODO: Wait some time, it's not instant
             const newApprovers = await safe.getOwnersWhoApprovedTx(safeTransaction)
             setApprovers(newApprovers)
             setError(null)
