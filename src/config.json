@@ -1,5 +1,5 @@
 {
-    "chainId" : 206,
+    "chainId" : 207,
     "safeConfig" : {
         "206" : {
             "safeMasterCopyAddress": "0x5B3187eD7c413c9eeC41118B0a45382Fa1A21B99",
@@ -10,6 +10,16 @@
             "signMessageLibAddress": "0x9de30ae0cE73FCa505ffb355dE58884B3D3dc246",
             "createCallAddress": "0xD97a7f82A71Dab78C81f57800F7Ef38b40fE73Ce",
             "simulateTxAccessorAddress" : "0xc082D5AaAa7D4964d919971aE2604eBEDDa6C0aF"
+        },
+        "207" : {
+            "safeMasterCopyAddress": "0x4C8E030234284C3A857cFA413b0D793aB8844429",
+            "safeProxyFactoryAddress": "0xeAa0C090eE953b9F2fb803dd1A98D72cd8cf5Bed",
+            "multiSendAddress": "0x19D5aede763160EAe01614f8fb71ed77Ea9Dbc99",
+            "multiSendCallOnlyAddress": "0x9641920514969CC7F5A26c5419b0Da0809320f74",
+            "fallbackHandlerAddress": "0xA5372D1FAe060Fab58129B5e0Cc750D7F13BF850",
+            "signMessageLibAddress": "0x71697fA34Aa51A8E57b6d603b0f4802bcD93cDF6",
+            "createCallAddress": "0x9B6dC2ecAD218fEEF2DBBdA081120Dce361D2645",
+            "simulateTxAccessorAddress" : "0xe4E7A239c3Eff81e35cB7f5782D90405F6107b1D"
         }
     }
 }
