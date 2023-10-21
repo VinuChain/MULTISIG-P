@@ -56,23 +56,30 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
         updateSignerAddress()
     }, [provider])
 
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            if (safeTransaction) {
+                const transactionHash = await safe.getTransactionHash(safeTransaction)
+                const newApprovers = await safe.getOwnersWhoApprovedTx(transactionHash)
+                setApprovers(newApprovers)
+            }
+        }, 3000)
+        return () => clearInterval(interval)
+      }, []);
+
     const alreadySigned = approvers && approvers.includes(signerAddress)
     const canSign = signerAddress && !approvers.includes(signerAddress) && safeTransaction && threshold && approvers.length < threshold - 1
     const canExecute = threshold && signerAddress && 
         (approvers.length >= threshold - 1 && !approvers.includes(signerAddress)) ||
         (approvers.length >= threshold && approvers.includes(signerAddress))
 
-    // TODO: When the signer changes, reset everything
     async function signOnChain () {
         if (!canSign) return
         setError(null)
         try {
-            console.log(safe)
-            console.log(safeTransaction)
             const transactionHash = await safe.getTransactionHash(safeTransaction)
             await safe.approveTransactionHash(transactionHash)
-            // TODO: Wait some time, it's not instant
-            const newApprovers = await safe.getOwnersWhoApprovedTx(safeTransaction)
+            const newApprovers = await safe.getOwnersWhoApprovedTx(transactionHash)
             setApprovers(newApprovers)
             setError(null)
         } catch (e) {
