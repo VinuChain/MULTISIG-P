@@ -103,6 +103,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
         <div>
             <div className="content box">            
                 <h4>Transaction Info</h4>
+                        <p>Name: {transactionInfo?.name || 'N/A'}</p>
                         <p>Type: {transactionInfo?.type == 'simple' ? 'Transfer' : 'Contract call'}</p>
                         <p>Tokens with transaction (wei): {transactionInfo.value}</p>
                         <p>To: {transactionInfo.to}</p>
@@ -143,7 +144,6 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
                     )
                 )
             }
-            
             
             <a className="button" download={formatTransactionFilename(transactionInfo)} href={'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(transactionInfo))}>Export Transaction</a>
             

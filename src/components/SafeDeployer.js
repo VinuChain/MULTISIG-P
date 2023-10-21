@@ -55,7 +55,7 @@ export default function SafeDeployer ({safeFactory, setSafe, setError}) {
                 ))
             }
 
-            <button className="button" onClick={deploy}>Deploy</button>
+            {!newSafe && <button className="button" onClick={deploy}>Deploy</button>}
             { newSafe && (<>
                 <p>Multisig deployed.</p>
                 <button className="button is-primary" onClick={() => setSafe(newSafe)}>Connect to deployed multisig</button>
