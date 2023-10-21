@@ -1,3 +1,4 @@
+import { useMultisigHistory } from "@/common/state"
 import { useEffect, useState } from "react"
 
 export default function SafeDeployer ({safeFactory, setSafe, setError}) {
@@ -5,6 +6,7 @@ export default function SafeDeployer ({safeFactory, setSafe, setError}) {
     const [numOwners, setNumOwners] = useState(1)
     const [threshold, setThreshold] = useState(1)
     const [newSafe, setNewSafe] = useState(null)
+    const { addToMultisigHistory } = useMultisigHistory()
     async function deploy() {
         const safeAccountConfig = {
             owners,
@@ -13,9 +15,9 @@ export default function SafeDeployer ({safeFactory, setSafe, setError}) {
           
         try {
             const safeSdk = await safeFactory.deploySafe({ safeAccountConfig })
-            console.log(safeSdk)
             setNewSafe(safeSdk)
             setError(null)
+            addToMultisigHistory(await safeSdk.getAddress())
         } catch (e) {
             setError(e)
         }
