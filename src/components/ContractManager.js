@@ -55,15 +55,15 @@ export default function ContractManager ({ provider, safe, setError, setTransact
                 <label htmlFor="abi">ABI</label>
                 <textarea className="textarea" id="abi" value={abiText} onChange={e => setAbiText(e.target.value)} />
                 <p>You can also load the ABI from a .json file. Note: That is not the same file as a transaction file!</p>
-                <div class="file">
-                    <label class="file-label">
-                        <input class="file-input" type="file" onChange={handleFileChange}
+                <div className="file">
+                    <label className="file-label">
+                        <input className="file-input" type="file" onChange={handleFileChange}
                         accept=".json" />
-                        <span class="file-cta">
-                        <span class="file-icon">
-                            <i class="fas fa-upload"></i>
+                        <span className="file-cta">
+                        <span className="file-icon">
+                            <i className="fas fa-upload"></i>
                         </span>
-                        <span class="file-label">
+                        <span className="file-label">
                             Choose a file…
                         </span>
                         </span>
