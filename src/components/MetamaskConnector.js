@@ -3,9 +3,20 @@ import { useMetaMask } from "metamask-react"
 import SafeManagement from "./SafeManagement"
 
 import config from "../config.json"
+import { useState, useEffect } from "react"
 
 export default function MetamaskConnector() {
-    const { status, connect, account, chainId, ethereum } = useMetaMask()
+    const { status, connect, account, chainId } = useMetaMask()
+
+    const [oldAccount, setOldAccount] = useState(null)
+
+    useEffect(() => {
+        if (account && oldAccount && account != oldAccount) {
+            window.location.reload(false)
+        }
+
+        setOldAccount(account)
+    }, [account])
 
     if (status === "initializing") return <div>Synchronisation with MetaMask ongoing...</div>
 
