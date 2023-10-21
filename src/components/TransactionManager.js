@@ -1,9 +1,9 @@
-const ethers = require('ethers')
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ExecuteTransaction from "./ExecuteTransaction"
 import ContractManager from "./ContractManager"
 import SimpleTransfer from "./SimpleTransfer"
 import DepositEther from "./DepositEther"
+import { useTransactionHistory } from "@/common/state"
 
 export default function TransactionManager ({ safe, setError, provider }) {
     const [transaction, setTransaction] = useState(null)
@@ -11,18 +11,32 @@ export default function TransactionManager ({ safe, setError, provider }) {
     const [callChoice, setCallChoice] = useState('none')
     const [success, setSuccess] = useState(false)
     const [showExplainer, setShowExplainer] = useState(false)
+    const { transactionHistory, addToTransactionHistory, removeFromTransactionHistory } = useTransactionHistory()
+
+    const [safeAddress, setSafeAddress] = useState('')
+
+    useEffect(() => {
+        async function loadSafeAddress() {
+            setSafeAddress(await safe.getAddress())
+        }
+        loadSafeAddress()
+    }, [safe])
 
     async function handleFileTransactionChange(e) {
         try {
             const file = e.target.files[0]
             const text = await file.text()
             const transaction = JSON.parse(text)
+            addToTransactionHistory(transaction)
             setTransaction(transaction)
             setError(null)
         } catch (e) {
             setError(e)
         }
     }
+
+    const relevantCachedTransactions =
+        transactionHistory ? transactionHistory.filter(transaction => transaction?.safeAddress == safeAddress) : []
 
     return (
         <div>
@@ -76,6 +90,19 @@ export default function TransactionManager ({ safe, setError, provider }) {
                     {showChoice == 'deposit' && <DepositEther provider={provider} safe={safe} setSuccess={setSuccess} setError={setError} />}
 
                 </div>
+            }
+            {relevantCachedTransactions?.length > 0 && !transaction && <>
+                <p>Or use a cached transaction:</p>
+                <div>
+                    {relevantCachedTransactions.map((transaction, index) => {
+                        return <span key={index}>
+                            <p style={{verticalAlign: 'center'}}>{transaction?.name || 'N/A'}</p>
+                            <button className="button is-success" onClick={() => setTransaction(transaction)}>Use</button>
+                            <button className="button is-warning" onClick={() => removeFromTransactionHistory(transaction)}>Remove</button>
+                        </span>
+                    })}
+                </div>
+            </>
             }
             {success && 
                 <article className="message is-success">

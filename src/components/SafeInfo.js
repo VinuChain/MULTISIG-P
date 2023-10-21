@@ -23,7 +23,7 @@ export default function SafeInfo({safe}) {
             <h4>Multisig Info</h4>
             {address && <p>Address: {address}</p>}
             {owners && <p>Owners: {owners.join(', ')}</p>}
-            {balance && <p>Balance: {balance.toString()}</p>}
+            {balance && <p>Balance: {balance.toString()} wei</p>}
             {threshold && <p>Threshold: {threshold}</p>}
         </div>
     )
