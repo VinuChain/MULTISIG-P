@@ -28,7 +28,7 @@ export default function MetamaskConnector() {
 
     if (status == "connected" && !account) return <div>Connected to MetaMask, but no account found</div>
 
-    if (status == "connected" && chainId != config.chainId) return <div>Connected to MetaMask, but not on VinuChain TestNet</div>
+    if (status == "connected" && chainId != config.chainId) return <div>Connected to MetaMask, but not on VinuChain</div>
 
     return <>
         <div>Connected account {account} on chain ID {chainId}</div>
