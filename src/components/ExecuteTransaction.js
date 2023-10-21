@@ -45,7 +45,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
 
     useEffect(() => {
         updateTransactionFields()
-    }, [safe])
+    }, [safe, transactionInfo])
 
     async function updateSignerAddress() {
         const signer = await provider.getSigner()
@@ -58,11 +58,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            if (safeTransaction) {
-                const transactionHash = await safe.getTransactionHash(safeTransaction)
-                const newApprovers = await safe.getOwnersWhoApprovedTx(transactionHash)
-                setApprovers(newApprovers)
-            }
+            await updateTransactionFields()
         }, 3000)
         return () => clearInterval(interval)
       }, []);
@@ -83,6 +79,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
             setApprovers(newApprovers)
             setError(null)
         } catch (e) {
+            console.log(e)
             setError(e)
         }
     }
