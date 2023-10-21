@@ -58,12 +58,12 @@ export default function SafeManagement() {
     return (
         <div className="box">
             {error &&
-                <article class="message is-danger">
-                <div class="message-header">
+                <article className="message is-danger">
+                <div className="message-header">
                   <p>Error</p>
-                  <button class="delete" aria-label="delete" onClick={() => setError(null)}></button>
+                  <button className="delete" aria-label="delete" onClick={() => setError(null)}></button>
                 </div>
-                <div class="message-body">
+                <div className="message-body">
                 {formatError(error)}
                 </div>
               </article>

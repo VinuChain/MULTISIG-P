@@ -31,7 +31,6 @@ export default function TransactionBuilder ( { contract, setTransaction, safe, s
     }
 
     async function buildTransaction() {
-        console.log(contract.interface.encodeFunctionData)
         let encodedTransaction = null
         
         try {

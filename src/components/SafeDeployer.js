@@ -9,7 +9,6 @@ export default function SafeDeployer ({safeFactory, setSafe, setError}) {
         const safeAccountConfig = {
             owners,
             threshold
-            // ...
           }
           
         try {
