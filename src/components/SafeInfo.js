@@ -15,6 +15,13 @@ export default function SafeInfo({safe}) {
     }
 
     useEffect(() => {
+        const interval = setInterval(async () => {
+            await updateInfo()
+        }, 3000)
+        return () => clearInterval(interval)
+      }, [])
+
+    useEffect(() => {
         updateInfo()
     }, [safe])
 
