@@ -24,8 +24,10 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
             }
             if (transactionInfo.type == 'contract') {
                 safeTransactionData.data = transactionInfo.data
-            } else {
+            } else if (transactionInfo.type == 'simple') {
                 safeTransactionData.data = '0x'
+            } else {
+                throw new Error('Unknown transaction type: ' + transactionInfo.type)
             }
             const newSafeTransaction = await safe.createTransaction({safeTransactionData})
             setSafeTransaction(newSafeTransaction)
@@ -61,7 +63,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
             await updateTransactionFields()
         }, 3000)
         return () => clearInterval(interval)
-      }, []);
+      }, [])
 
     const alreadySigned = approvers && approvers.includes(signerAddress)
     const canSign = signerAddress && !approvers.includes(signerAddress) && safeTransaction && threshold && approvers.length < threshold - 1

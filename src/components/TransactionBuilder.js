@@ -61,6 +61,7 @@ export default function TransactionBuilder ( { contract, setTransaction, safe, s
             nonce,
             data: encodedTransaction,
             name : transactionName || (chosenFunction + '_' + nonce),
+            type : 'contract',
             safeAddress: await safe.getAddress()
         }
 
