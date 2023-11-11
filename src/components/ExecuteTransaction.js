@@ -2,9 +2,14 @@ import { maybeFormatEther } from "@/common/utils"
 import { useEffect, useRef, useState } from "react"
 
 function formatTransactionFilename(transaction) {
-    if (!transaction) return 'transaction.json'
-    if (!transaction.functionName) return 'transaction_' + transaction.nonce + '.json'
-    return transaction.functionName.replace(' ', '_').replace(/\(.+\)/g, '') + '_' + transaction.nonce + '.json'
+    if (!transaction) return 'empty_transaction.json'
+
+    if (transaction.name) return transaction.name.replace(' ', '_') + '.json'
+
+    if (transaction.functionName) return transaction.functionName.replace(' ', '_').replace(/\(.+\)/g, '') + '_' + transaction.nonce + '.json'
+
+    return 'transaction_' + transaction.nonce + '.json'
+    
 }
 
 export default function ExecuteTransaction({ safe, provider, transaction: transactionInfo, setError }) {
