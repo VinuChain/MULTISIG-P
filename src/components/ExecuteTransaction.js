@@ -13,6 +13,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
     const [transactionHash, setTransactionHash] = useState(null)
     const [approvers, setApprovers] = useState([])
     const [signerAddress, setSignerAddress] = useState(null)
+    const [safeNonce, setSafeNonce] = useState(null)
 
     async function updateTransactionFields() {
         if (!transactionInfo) return
@@ -46,6 +47,16 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
         }
     }
 
+    async function updateNonce() {
+        if (!safe) return
+
+        try {
+            setSafeNonce(await safe.getNonce())
+        } catch (e) {
+            setError(e)
+        }
+    }
+
     useEffect(() => {
         updateTransactionFields()
     }, [safe, transactionInfo])
@@ -61,7 +72,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            await updateTransactionFields()
+            await Promise.all([updateTransactionFields(), updateNonce()])
         }, 3000)
         return () => clearInterval(interval)
       }, [])
@@ -109,10 +120,17 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
                         <p>To: {transactionInfo.to}</p>
                         <p>Nonce: {transactionInfo.nonce}</p>
                         <p>Hash: {transactionHash}</p>
-                        <p>Signers: {
-                            (approvers ? 'None' : approvers.join(', '))
-                            + ' (' + approvers.length + '/' + threshold + ')'
-                        }</p>
+                        {
+                            transactionInfo?.nonce && safeNonce && (
+                                safeNonce > transactionInfo?.nonce ?
+                                <p>Safe nonce is higher than transaction nonce. Either the transaction has been executed or another transaction with the same nonce took its place.</p> :
+                                <p>Signers: {
+                                    approvers ? (approvers.join(', ')
+                                    + ' (' + approvers.length + '/' + threshold + ')') : 'None'
+                                }</p>
+                            )
+                            
+                        }
                 {
                     transactionInfo?.type == 'contract' && <>
                         <p>Arguments:</p>
