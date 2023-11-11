@@ -5,6 +5,10 @@ import SimpleTransfer from "./SimpleTransfer"
 import DepositEther from "./DepositEther"
 import { useTransactionHistory } from "@/common/state"
 
+import config from "@/config"
+
+const ethers = require('ethers')
+
 export default function TransactionManager ({ safe, setError, provider }) {
     const [transaction, setTransaction] = useState(null)
     const [showChoice, setShowChoice] = useState('none')
@@ -27,6 +31,15 @@ export default function TransactionManager ({ safe, setError, provider }) {
             const file = e.target.files[0]
             const text = await file.text()
             const transaction = JSON.parse(text)
+
+            if (!transaction.version || transaction.version < config.schemaVersion) {
+                throw new Error('Unsupported transaction version.')
+            }
+
+            if (transaction.value) {
+                transaction.value = ethers.BigNumber.from(transaction.value)
+            }
+
             addToTransactionHistory(transaction)
             setTransaction(transaction)
             setError(null)

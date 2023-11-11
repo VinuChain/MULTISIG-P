@@ -2,6 +2,10 @@ import { useEffect, useState } from "react"
 
 import { useTransactionHistory } from "@/common/state"
 
+const ethers = require('ethers')
+
+import config from "@/config"
+
 export default function TransactionBuilder ( { contract, setTransaction, safe, setError } ) {
     const [chosenFunction, setChosenFunction] = useState('')
     const [value, setValue] = useState('0')
@@ -55,14 +59,15 @@ export default function TransactionBuilder ( { contract, setTransaction, safe, s
 
         const transaction = {
             to : contract.address,
-            value,
+            value : ethers.utils.parseEther(value),
             inputInfo,
             functionName : chosenFunction,
             nonce,
             data: encodedTransaction,
             name : transactionName || (chosenFunction + '_' + nonce),
             type : 'contract',
-            safeAddress: await safe.getAddress()
+            safeAddress: await safe.getAddress(),
+            version : config.schemaVersion
         }
 
         setTransaction(transaction)
@@ -73,7 +78,7 @@ export default function TransactionBuilder ( { contract, setTransaction, safe, s
         <div>
             <p className="is-success">ABI loaded successfully. Choose the function to call.</p>
             
-            <p className="is-warning">Note: All numerical values must be inserted in integer format!</p>
+            <p className="is-warning">Note: All numerical values (except transaction value) must be inserted in integer format!</p>
             <select className="select" onChange={e => setChosenFunction(e.target.value)} value={chosenFunction}>
                 {(
                     Object.keys(functions))
@@ -92,7 +97,7 @@ export default function TransactionBuilder ( { contract, setTransaction, safe, s
                         </div>
                     )}
                 </div>
-                <label htmlFor="value">Tokens to be sent with the transaction (wei)</label>
+                <label htmlFor="value">Tokens to be sent with the transaction (VC)</label>
                 <input id="value" className="input" type="text" value={value} onChange={e => setValue(e.target.value)} />
                 <label htmlFor="transactionName">Transaction Name (will not be saved on-chain)</label>
                 <input id="transactionName" className="input" type="text" value={transactionName} onChange={e => setTransactionName(e.target.value)} />

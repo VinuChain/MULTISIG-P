@@ -1,6 +1,6 @@
-const ethers = require('ethers')
-
 import { useEffect, useState } from "react"
+
+import { maybeFormatEther } from "@/common/utils"
 
 export default function SafeInfo({safe}) {
     const [address, setAddress] = useState('')
@@ -30,7 +30,7 @@ export default function SafeInfo({safe}) {
             <h4>Multisig Info</h4>
             {address && <p>Address: {address}</p>}
             {owners && <p>Owners: {owners.join(', ')}</p>}
-            {balance && <p>Balance: {balance.toString()} wei</p>}
+            {balance && <p>Balance: {maybeFormatEther(balance)} VC</p>}
             {threshold && <p>Threshold: {threshold}</p>}
         </div>
     )

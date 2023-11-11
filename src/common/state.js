@@ -1,7 +1,39 @@
 import { atom, useRecoilState } from 'recoil'
 import { recoilPersist } from 'recoil-persist'
 
-const { persistAtom } = recoilPersist()
+const ethers = require('ethers')
+
+function customReplace(value) {
+    // Recursively replaces instances of BigNumber with their parsed value
+
+    if (!value) {
+        return value
+    } else if (value instanceof Array) {
+        return value.map(customReplace)
+    } else if (value.type == 'BigNumber') {
+        return ethers.BigNumber.from(value)
+    } else if (value instanceof Object) {
+        for (const [key, val] of Object.entries(value)) {
+            value[key] = customReplace(val)
+        }
+        return value
+    } else {
+        return value
+    }
+}
+
+const customConverter = {
+    stringify: (value) => {
+        return JSON.stringify(value)
+    },
+    parse: (value) => {
+        const parsed = JSON.parse(value)
+
+        return customReplace(parsed)
+    }
+}
+
+const { persistAtom } = recoilPersist({ converter : customConverter })
 
 const multisigHistoryState = atom({
     key: 'multisigHistory',

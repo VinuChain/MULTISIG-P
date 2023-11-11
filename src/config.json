@@ -21,5 +21,6 @@
             "createCallAddress": "0x9B6dC2ecAD218fEEF2DBBdA081120Dce361D2645",
             "simulateTxAccessorAddress" : "0xe4E7A239c3Eff81e35cB7f5782D90405F6107b1D"
         }
-    }
+    },
+    "schemaVersion" : 1
 }

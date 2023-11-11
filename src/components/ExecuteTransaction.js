@@ -1,3 +1,4 @@
+import { maybeFormatEther } from "@/common/utils"
 import { useEffect, useRef, useState } from "react"
 
 function formatTransactionFilename(transaction) {
@@ -104,7 +105,7 @@ export default function ExecuteTransaction({ safe, provider, transaction: transa
                 <h4>Transaction Info</h4>
                         <p>Name: {transactionInfo?.name || 'N/A'}</p>
                         <p>Type: {transactionInfo?.type == 'simple' ? 'Transfer' : 'Contract call'}</p>
-                        <p>Tokens with transaction (wei): {transactionInfo.value}</p>
+                        <p>Tokens with transaction (VC): {maybeFormatEther(transactionInfo.value)}</p>
                         <p>To: {transactionInfo.to}</p>
                         <p>Nonce: {transactionInfo.nonce}</p>
                         <p>Hash: {transactionHash}</p>
